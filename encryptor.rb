@@ -1,38 +1,55 @@
 class Encryptor
+
+  def initialize(default_rotation = 13)
+    @rotation = default_rotation  
+  end
+  
   def cipher
-    {
-      'a' => "n", 'b' => 'o', 'c'=> 'p', 'd' => 'q',
-      'e' => "r", 'f' => 's', 'g'=> 't', 'h' => 'u',
-      'i' => "v", 'j' => 'w', 'k'=> 'x', 'l' => 'y',
-      'm' => "z", 'n' => 'a', 'o'=> 'b', 'p' => 'c',
-      'q' => "d", 'r' => 'e', 's'=> 'f', 't' => 'g',
-      'u' => "h", 'v' => 'i', 'w'=> 'j', 'x' => 'k',
-      'y' => "l", 'z' => 'm' 
-    }
+    letters = ("a".."z").to_a
+    rotated = letters.rotate(@rotation)
+    zipped = letters.zip(rotated)
+    Hash[zipped]
+  end
+
+  def dicipher
+    letters = ("a".."z").to_a
+    rotated = letters.rotate(-@rotation)
+    zipped = letters.zip(rotated)
+    Hash[zipped]
   end
 
   def encrypt_letter(letter)
     cipher[letter.downcase]
   end
 
-  def encrypt(string)
+  def decrypt_letter(letter)
+    dicipher[letter.downcase]
+  end
+
+  def encrypt(unencrypted_string)
     #take string
     #split into array of letters
     # encrypt each letter
     #mash all encrypted letters back into string
-    letters = string.split("")
+    letters = unencrypted_string.split("")
     result = letters.collect do |letter|
        encrypt_letter(letter)
-      
-    end
+      end
     result.join
   end
+  def decrypt(encrypted_string)
+    #split string into array of letters
+    #iterate over each letter
+    #decrypt_letter which would rotate negative @rotation
+    #return new array
+    #join the array
+    #returns unecrypted string
+    letters = encrypted_string.split("")
+    result = letters.collect do |letter|
+       decrypt_letter(letter)
+      end
+    result.join
 
-  def decrypt(result)
-    letters = result.split("")
-    new_result = letters.collect do |letter|
-      encrypt_letter(letter)
-    end
-    new_result.join
+
   end
 end
