@@ -21,7 +21,7 @@ class Encryptor
   def encrypt_letter(letter)
     cipher[letter.downcase]
   end
-
+ 
   def decrypt_letter(letter)
     dicipher[letter.downcase]
   end
